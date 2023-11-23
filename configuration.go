@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -12,6 +13,7 @@ func init() {
 	SPEECH_REGION = os.Getenv("SPEECH_REGION")
 	//panic if not set
 	if SPEECH_KEY == "" || SPEECH_REGION == "" {
-		panic("SPEECH_KEY or SPEECH_REGION not set")
+		panic("SPEECH_KEY or SPEECH_REGION are failed to be loaded from environment variables.")
 	}
+	fmt.Println("SPEECH_KEY and SPEECH_REGION are loaded from environment variables.")
 }
