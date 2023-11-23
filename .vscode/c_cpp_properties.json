@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${env:SPEECHSDK_ROOT}/include/c_api/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",  // 请确保此路径指向你的 gcc 或 g++ 编译器
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "${env:SPEECHSDK_ROOT}/include/c_api/**",
+                    "${env:SPEECHSDK_ROOT}/lib/<architecture>/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
