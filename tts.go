@@ -42,9 +42,13 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 		audioConfig  *audio.AudioConfig
 		speechConfig *speech.SpeechConfig
 	)
+	if audioConfig, err = audio.NewAudioConfigFromDefaultSpeakerOutput(); err != nil {
+		fmt.Println("NewAudioConfigFromDefaultSpeakerOutput Got an error: ", err)
+		return
+	}
 	defer audioConfig.Close()
 	if speechConfig, err = speech.NewSpeechConfigFromSubscription(SPEECH_KEY, SPEECH_REGION); err != nil {
-		fmt.Println("Got an error: ", err)
+		fmt.Println("NewSpeechConfigFromSubscription Got an error: ", err)
 		return
 	}
 	defer speechConfig.Close()
@@ -56,7 +60,7 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 
 	speechSynthesizer, err := speech.NewSpeechSynthesizerFromConfig(speechConfig, audioConfig)
 	if err != nil {
-		fmt.Println("Got an error: ", err)
+		fmt.Println("NewSpeechSynthesizerFromConfig Got an error: ", err)
 		return
 	}
 	defer speechSynthesizer.Close()
