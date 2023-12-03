@@ -16,7 +16,7 @@ func synthesizeStartedHandler(event speech.SpeechSynthesisEventArgs) {
 
 func synthesizingHandler(event speech.SpeechSynthesisEventArgs) {
 	defer event.Close()
-	fmt.Printf("Synthesizing, audio chunk size %d.\n", len(event.Result.AudioData))
+	//fmt.Printf("Synthesizing, audio chunk size %d.\n", len(event.Result.AudioData))
 }
 
 func synthesizedHandler(event speech.SpeechSynthesisEventArgs) {
@@ -81,7 +81,10 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 	}
 	defer outcome.Close()
 	if outcome.Error != nil {
+		fmt.Println("Synthesis error: ", outcome.Error, " ssml: ", ssml)
 		return nil, outcome.Error
+	} else {
+		fmt.Println("Synthesis success! audio length: ", len(outcome.Result.AudioData), "ssml: ", ssml)
 	}
 
 	if outcome.Result.Reason == common.SynthesizingAudioCompleted {
