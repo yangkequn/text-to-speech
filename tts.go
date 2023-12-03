@@ -21,7 +21,7 @@ func synthesizingHandler(event speech.SpeechSynthesisEventArgs) {
 
 func synthesizedHandler(event speech.SpeechSynthesisEventArgs) {
 	defer event.Close()
-	fmt.Printf("Synthesized, audio length %d.\n", len(event.Result.AudioData))
+	//fmt.Printf("Synthesized, audio length %d.\n", len(event.Result.AudioData))
 }
 
 func cancelledHandler(event speech.SpeechSynthesisEventArgs) {
