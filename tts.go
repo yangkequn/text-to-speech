@@ -39,8 +39,9 @@ type TTSResult struct {
 
 func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 	var (
-		audioConfig  *audio.AudioConfig
-		speechConfig *speech.SpeechConfig
+		audioConfig       *audio.AudioConfig
+		speechConfig      *speech.SpeechConfig
+		speechSynthesizer *speech.SpeechSynthesizer
 	)
 	if audioConfig, err = audio.NewAudioConfigFromDefaultSpeakerOutput(); err != nil {
 		fmt.Println("NewAudioConfigFromDefaultSpeakerOutput Got an error: ", err)
@@ -57,9 +58,7 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 	//speechConfig.SetProperty(common.SpeechLogFilename, "SpeechLog.txt")
 	//16khz ogg
 	speechConfig.SetSpeechSynthesisOutputFormat(common.Ogg16Khz16BitMonoOpus)
-
-	speechSynthesizer, err := speech.NewSpeechSynthesizerFromConfig(speechConfig, audioConfig)
-	if err != nil {
+	if speechSynthesizer, err = speech.NewSpeechSynthesizerFromConfig(speechConfig, audioConfig); err != nil {
 		fmt.Println("NewSpeechSynthesizerFromConfig Got an error: ", err)
 		return
 	}
@@ -88,10 +87,7 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 	}
 
 	if outcome.Result.Reason == common.SynthesizingAudioCompleted {
-
-		result = &TTSResult{}
-		result.AudioData = outcome.Result.AudioData
-		result.AudioDurationSecn = outcome.Result.AudioDuration
+		result = &TTSResult{AudioData: outcome.Result.AudioData, AudioDurationSecn: outcome.Result.AudioDuration}
 		return result, nil
 	} else {
 		fmt.Printf("TTS CANCELED: Reason=%d.\n", outcome.Result.Reason)
