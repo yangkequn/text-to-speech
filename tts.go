@@ -94,6 +94,7 @@ func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
 		result.AudioDurationSecn = outcome.Result.AudioDuration
 		return result, nil
 	} else {
+		fmt.Printf("TTS CANCELED: Reason=%d.\n", outcome.Result.Reason)
 		return nil, fmt.Errorf("TTS CANCELED: Reason=%d.\n", outcome.Result.Reason)
 	}
 }

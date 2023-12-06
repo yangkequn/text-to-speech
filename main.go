@@ -17,6 +17,11 @@ func main() {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
+	var (
+		dataJson  []byte
+		err       error
+		audioInfo *TTSResult
+	)
 	ssml := r.FormValue("ssml")
 	if ssml == "" {
 		DemoUsage := `
@@ -39,19 +44,20 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, DemoUsage)
 		return
 	}
-	if audioInfo, err := TTSInfosToSpeech(ssml); err != nil {
+	if audioInfo, err = TTSInfosToSpeech(ssml); err != nil {
+		fmt.Println("TTSInfosToSpeech Got an error: ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	} else if audioInfo != nil {
-		//send audioInfo back to client
-		dataJson, err := json.Marshal(audioInfo)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		fmt.Fprintf(w, string(dataJson))
-	} else {
+	} else if audioInfo == nil {
 		http.Error(w, "No audio info found for the given SSML.", http.StatusNotFound)
+		return
 	}
+	//send audioInfo back to client
+	if dataJson, err = json.Marshal(audioInfo); err != nil {
+		fmt.Println("json.Marshal Got an error: ", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, string(dataJson))
 	return
 }
