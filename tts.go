@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/Microsoft/cognitive-services-speech-sdk-go/audio"
@@ -35,6 +36,12 @@ type TTSResult struct {
 
 	// AudioDuration presents the time duration of synthesized audio.
 	AudioDurationSecn time.Duration
+}
+
+var accountDisplayed = false
+
+func DisPlayAccountInfoWhenLoading() {
+	fmt.Println("Key:", os.Getenv("key"))
 }
 
 func TTSInfosToSpeech(ssml string) (result *TTSResult, err error) {
